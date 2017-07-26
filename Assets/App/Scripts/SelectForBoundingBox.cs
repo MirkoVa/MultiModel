@@ -4,18 +4,12 @@ using UnityEngine;
 using Mirko.HoloToolkitExtensions;
 
 
-#if WINDOWS_UWP
-using HoloToolkit.Unity.InputModule;
-
-public class SelectForBoundingBox : MonoBehaviour, IInputClickHandler {
-#else
 public class SelectForBoundingBox : MonoBehaviour {
-#endif
-    // Usepublic class SelectForBoundingBox : MonoBehaviour, IInputClickHandler { this for initialization
+    // Use public class SelectForBoundingBox : MonoBehaviour, IInputClickHandler { this for initialization
     private GameObject sarObject;
     Renderer rend;
     Bounds sarBounds;
-    GameObject menu;
+    public GameObject menu;
     public Material sarSelectorMat;
     public Material sarScaleMat;
     public GameObject menuPrefab;
@@ -34,54 +28,7 @@ public class SelectForBoundingBox : MonoBehaviour {
         sarBounds = new Bounds();
     }
 
-#if WINDOWS_UWP
-    public virtual void OnInputClicked(InputEventData eventData)
-    {
-        if (!isDrawn)
-        {
-            DrawSelectionBox();
-            isDrawn = true;
-        }
-        else if (isDrawn && gameObject.transform.childCount != 0 && gameObject.tag != "Cursor")
-        {
-            DeleteAllChildren();
-            isDrawn = false;
-        }
-    }
-#else
-    private void OnMouseDown()
-    {
-        OnSelect();
-    }
-
-
-    void OnSelect()
-    {
-        if (!isDrawn)
-        {
-            DrawSelectionBox();
-            isDrawn = true;
-        }
-        else if (isDrawn && gameObject.transform.childCount != 0 && gameObject.tag != "Cursor")
-        {
-            DeleteAllChildren();
-            isDrawn = false;
-        }
-    }
-#endif
-
-    void DeleteAllChildren()
-    {
-        foreach(Transform child in transform)
-        {
-            if(child.name == "Menu")
-            {
-                Destroy(child.gameObject);
-            }
-        }
-    }
-
-    void DrawSelectionBox()
+    public void DrawSelectionBox()
     {
         // Create Box
         GameObject sarObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -205,16 +152,16 @@ public class SelectForBoundingBox : MonoBehaviour {
 
     void Update()
     {
-        if (isDrawn)
+        /*if (isDrawn)
         {
             FindFace();
             menu.transform.position = new Vector3(closestFace.x, sarBounds.min.y, closestFace.y);
             menu.transform.rotation = Quaternion.AngleAxis(closestFaceRotateY, Vector3.up);
-        }
-        if (isDrawn && BaseAppStateManager.Instance.SelectedGameObject != gameObject && gameObject.transform.childCount != 0 && gameObject.tag != "Cursor")
+        }*/
+        /*if (isDrawn && BaseAppStateManager.Instance.SelectedGameObject != gameObject)
         {
-            DeleteAllChildren();
+            Destroy(menu);
             isDrawn = false;
-        }
+        }*/
     }
 }

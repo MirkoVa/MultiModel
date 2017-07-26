@@ -48,6 +48,7 @@ public class SpeechCommandExecuter : MonoBehaviour
         var manipulator = GetSpatialManipulator();
         if (manipulator == null)
         {
+            Debug.Log("Manipulator not found");
             return;
         }
 

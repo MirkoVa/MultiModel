@@ -13,7 +13,7 @@ namespace Mirko.HoloToolkitExtensions
         public float ScaleSpeed = 0.2f;
 
         public bool rotateY = true;
-        public bool rotateX = true;
+        public bool rotateX = false;
         public bool rotateZ = false;
 
 
@@ -100,7 +100,11 @@ namespace Mirko.HoloToolkitExtensions
         void Rotate(Vector3 manipulationData)
         {
             Vector3 manip = manipulationData;
-            if (rotateX && Mathf.Abs(manip.x) > Mathf.Abs(manip.y) && Mathf.Abs(manip.x) > Mathf.Abs(manip.z))
+
+            transform.RotateAround(transform.position, Vector3.up, Camera.main.transform.InverseTransformVector(manipulationData).x * RotateSpeed);
+
+
+            /*if (rotateX && Mathf.Abs(manip.x) > Mathf.Abs(manip.y) && Mathf.Abs(manip.x) > Mathf.Abs(manip.z))
             {
                transform.RotateAround(transform.position, Camera.main.transform.up,
                     -manipulationData.x * RotateSpeed);
@@ -114,12 +118,12 @@ namespace Mirko.HoloToolkitExtensions
             {
                 transform.RotateAround(transform.position, Camera.main.transform.right,
                     manipulationData.z * RotateSpeed);
-            }
+            }*/
         }
 
         void Scale(Vector3 manipulationData)
         {
-            transform.localScale *= 1.0f - (manipulationData.z * ScaleSpeed);
+            transform.localScale *= 1.0f - (Camera.main.transform.InverseTransformVector(manipulationData).z * ScaleSpeed);
         }
 
         IEnumerator waitFunction()
